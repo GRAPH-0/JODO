@@ -2,8 +2,10 @@
 
 ----
 
-The official implementation of Learning Joint 2D & 3D Diffusion Models for
+The implementation of Learning Joint 2D & 3D Diffusion Models for
 Complete Molecule Generation.
+
+We will release the code ASAP.
 
 Represent molecules as 3D point cloud and 2D bonding graph:
 <p align="left">
