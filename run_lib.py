@@ -9,7 +9,6 @@ import pickle
 
 from datasets import get_dataset, inf_iterator, get_dataloader
 from models.ema import ExponentialMovingAverage
-from models.wrapper_edm import get_edm_model, get_edm_sampling_fn
 import losses
 from utils import *
 from evaluation import *

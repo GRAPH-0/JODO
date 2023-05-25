@@ -1,3 +1,5 @@
+# DGT, data prediction model
+
 from torch import nn
 import torch
 from . import utils
@@ -61,7 +63,7 @@ class EquivariantMixBlock(nn.Module):
     """Equivariant block based on graph relational transformer layer."""
 
     def __init__(self, node_dim, edge_dim, time_dim, num_extra_heads, num_heads, cond_time, dist_gbf, softmax_inf,
-                 mlp_ratio=2, act=nn.SiLU(), dropout=0.0, gbf_name='GaussianLayer', trans_name='TransMixLayer1'):
+                 mlp_ratio=2, act=nn.SiLU(), dropout=0.0, gbf_name='GaussianLayer', trans_name='TransMixLayer'):
         super().__init__()
 
         self.dropout = nn.Dropout(dropout)

@@ -14,7 +14,7 @@ def restore_checkpoint(ckpt_dir, state, device):
     else:
         loaded_state = torch.load(ckpt_dir, map_location=device)
         state['optimizer'].load_state_dict(loaded_state['optimizer'])
-        state['model'].load_state_dict(loaded_state['model'], strict=False)
+        state['model'].load_state_dict(loaded_state['model'], strict=True)  # TODO: remove here
         state['ema'].load_state_dict(loaded_state['ema'])
         state['step'] = loaded_state['step']
         return state

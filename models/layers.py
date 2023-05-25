@@ -89,7 +89,7 @@ class Trans_Layer(MessagePassing):
                                              self.out_channels, self.heads)
 
 
-class TransMixLayer1(MessagePassing):
+class TransMixLayer(MessagePassing):
     """The version for involving the edge feature. Multiply Msg. Without FFN and norm.
     Extra attention heads from adjacency matrix."""
 
