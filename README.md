@@ -101,24 +101,92 @@ QM9 Sampling Example:
 # sample from our pretrained checkpoint
 CUDA_VISIBLE_DEVICES=2 python main.py --config configs/vpsde_qm9_uncond_jodo.py --mode eval --workdir exp_uncond/vpsde_qm9_jodo --config.eval.ckpts '30' --config.eval.batch_size 2500 --config.sampling.steps 1000
 ```
+* Set `--config.eval.batch_size` to control GPU memory usage.
+* Set iteration steps via `--config.sampling.steps`. (Great results can be obtained from 1000 steps to 50 steps)
 
+GEOM-Drugs Training Example:
+```shell
+# Base
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode train --workdir exp_uncond/vpsde_geom_jodo_base --config.model.n_layers 6 --config.model.nf 128
+
+# Medium
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode train --workdir exp_uncond/vpsde_geom_jodo_media
+
+# Large
+CUDA_VISIBLE_DEVICES=0,1 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode train --workdir exp_uncond/vpsde_geom_jodo_large --config.model.nf 384 --config.training.n_iters 1500000
+```
+
+GEOM-Drugs Sampling Example:
+```shell
+# Base
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode eval --workdir exp_uncond/vpsde_geom_jodo_base --config.model.n_layers 6 --config.model.nf 128 --config.eval.ckpts '30' --config.eval.batch_size 800 --config.sampling.steps 1000
+
+# Medium
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode eval --workdir exp_uncond/vpsde_geom_jodo_media --config.eval.ckpts '30' --config.eval.batch_size 1000 --config.sampling.steps 1000
+
+# Large
+CUDA_VISIBLE_DEVICES=0,1 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode eval --workdir exp_uncond/vpsde_geom_jodo_large --config.model.nf 384 --config.eval.ckpts '30' --config.eval.batch_size 500 --config.sampling.steps 1000
+```
 
 ## Conditional Generation
+
+```shell
+# Training
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.model.softmax_inf=False
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_gap --config.cond_property gap
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_homo --config.cond_property homo
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_lumo --config.cond_property lumo
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_mu --config.cond_property mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_Cv --config.cond_property Cv
+
+# Sampling
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.eval.ckpts '40' --config.model.softmax_inf=False
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_gap --config.cond_property gap --config.eval.ckpts '40'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_homo --config.cond_property homo --config.eval.ckpts '40'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_lumo --config.cond_property lumo --config.eval.ckpts '40'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_mu --config.cond_property mu --config.eval.ckpts '40'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_Cv --config.cond_property Cv --config.eval.ckpts '40'
+```
+
+* Set conditional property `alpha, gap, homo, lumo, mu, Cv` by `--config.cond_property`.
+
+```shell
+# Training
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu
+
+# Sampling
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu --config.eval.ckpts '50'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu --config.eval.ckpts '50'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu --config.eval.ckpts '50'
+```
+* Set multi conditional properties via `--config.cond_property1` and `--config.cond_property2`.
 
 
 ## Molecular Graph Generation
 
+[//]: # (ZINC250k:)
+
+[//]: # (```shell)
+
+[//]: # (# Training)
+
+[//]: # (CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_zinc_2d_jodo.py --mode train --workdir exp_2d/vpsde_zinc_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000   )
+
+[//]: # ()
+[//]: # (# Sampling)
+
+[//]: # (```)
 
 ## Citation
 
 ```bibtex
-@misc{huang2023learning,
-      title={Learning Joint 2D & 3D Diffusion Models for Complete Molecule Generation}, 
-      author={Han Huang and Leilei Sun and Bowen Du and Weifeng Lv},
-      year={2023},
-      eprint={2305.12347},
-      archivePrefix={arXiv},
-      primaryClass={q-bio.BM}
+@article{huang2023learning,
+  title={Learning Joint 2D \& 3D Diffusion Models for Complete Molecule Generation},
+  author={Huang, Han and Sun, Leilei and Du, Bowen and Lv, Weifeng},
+  journal={arXiv preprint arXiv:2305.12347},
+  year={2023}
 }
 
 @article{huang2023conditional,
