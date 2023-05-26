@@ -168,6 +168,15 @@ CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_uncond_jodo.py
 CUDA_VISIBLE_DEVICES=0,1 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode eval --workdir exp_uncond/vpsde_geom_jodo_large --config.model.nf 384 --config.eval.ckpts '30' --config.eval.batch_size 500 --config.sampling.steps 1000
 ```
 
+Using the simplified DGT without extra attention heads can also achieve relatively good performance:
+```shell
+# QM9 Training
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_uncond_jodo.py --mode train --workdir exp_uncond/vpsde_qm9_jodo_sim --config.model.name DGT_concat_sim
+
+# GEOM-Drugs Medium Training
+CUDA_VISIBLE_DEVICES=2,3 python main.py --config configs/vpsde_geom_uncond_jodo.py --mode train --workdir exp_uncond/vpsde_geom_jodo_media_sim --config.model.name DGT_concat_sim
+```
+
 ## Conditional Generation
 
 ```shell
