@@ -229,30 +229,23 @@ def vpsde_edge_evaluate(config, workdir, eval_folder="eval"):
             # EDM evaluation metrics
             stability_res, rdkit_res, sample_rdmols = EDM_metric(processed_mols)
             logging.info('Number of molecules: %d' % len(sample_rdmols))
-            logging.info("3D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-3D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f," %
+                         (stability_res['atom_stable'], stability_res['mol_stable'], rdkit_res['Validity'],
+                          rdkit_res['Complete']))
 
             # Mose evaluation metrics
             mose_res = mose_metric(sample_rdmols)
-            logging.info("3D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
-                         mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
+            logging.info("Metric-3D || 3D FCD: %.4f" % (mose_res['FCD']))
 
             # 2D evaluation metrics
             stability_res, rdkit_res, complete_rdmols = EDM_metric_2D(processed_mols)
-            logging.info("2D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-2D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
+                         " unique & valid: %.4f, unique & valid & novelty: %.4f" % (stability_res['atom_stable'],
+                         stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'],
+                         rdkit_res['Novelty']))
             mose_res = mose_metric(complete_rdmols)
-            logging.info("2D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
+            logging.info("Metric-2D || FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
                          mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
-
-            logging.info("Mean QED: %.4f, MCF: %.4f, SAS: %.4f, logP: %.4f, MW: %.4f" % (mose_res['QED'],
-                          mose_res['Filters'], mose_res['SA'], mose_res['logP'], mose_res['weight']))
 
             # save sample mols
             if config.eval.save_graph:
@@ -264,7 +257,7 @@ def vpsde_edge_evaluate(config, workdir, eval_folder="eval"):
             # Substructure Geometry MMD
             if config.eval.sub_geometry:
                 sub_geo_mmd_res = sub_geo_mmd_metric(complete_rdmols)
-                logging.info("Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
+                logging.info("Metric-Align || Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
                     sub_geo_mmd_res['bond_length_mean'], sub_geo_mmd_res['bond_angle_mean'],
                     sub_geo_mmd_res['dihedral_angle_mean']))
                 ## bond length
@@ -478,28 +471,23 @@ def vpsde_evaluate(config, workdir, eval_folder="eval"):
                 # EDM evaluation metrics
                 stability_res, rdkit_res, sample_rdmols = EDM_metric(processed_mols)
                 logging.info('Number of molecules: %d' % len(sample_rdmols))
-                logging.info("atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                             " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                             stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'],
-                             rdkit_res['Novelty']))
+                logging.info("Metric-3D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f," %
+                             (stability_res['atom_stable'], stability_res['mol_stable'], rdkit_res['Validity'],
+                              rdkit_res['Complete']))
 
                 # Mose evaluation metrics
                 mose_res = mose_metric(sample_rdmols)
-                logging.info("FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
-                             mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
+                logging.info("Metric-3D || FCD: %.4f" % (mose_res['FCD']))
             else:
                 # pure 2D evaluation metrics
                 stability_res, rdkit_res, complete_rdmols = EDM_metric_2D(processed_mols)
-                logging.info("2D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                             " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
+                logging.info("Metric-2D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
+                             " unique & valid: %.4f, unique & valid & novelty: %.4f" % (stability_res['atom_stable'],
                              stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete'],
                              rdkit_res['Unique'], rdkit_res['Novelty']))
                 mose_res = mose_metric(complete_rdmols)
-                logging.info("2D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
-                             mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
-
-                logging.info("Mean QED: %.4f, MCF: %.4f, SAS: %.4f, logP: %.4f, MW: %.4f" % (mose_res['QED'],
-                             mose_res['Filters'], mose_res['SA'], mose_res['logP'], mose_res['weight']))
+                logging.info("Metric-2D || FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" %
+                             (mose_res['FCD'], mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
 
             # save sample mols
             if config.eval.save_graph:
@@ -732,26 +720,22 @@ def vpsde_edge_cond_evaluate(config, workdir, eval_folder="eval"):
             # EDM evaluation metrics
             stability_res, rdkit_res, sample_rdmols = EDM_metric(processed_mols)
             logging.info('Number of molecules: %d' % len(sample_rdmols))
-            logging.info("3D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-3D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f," %
+                         (stability_res['atom_stable'], stability_res['mol_stable'], rdkit_res['Validity'],
+                         rdkit_res['Complete']))
 
             # Mose evaluation metrics
             mose_res = mose_metric(sample_rdmols)
-            logging.info("3D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
-                         mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
+            logging.info("Metric-3D || FCD: %.4f" % (mose_res['FCD']))
 
             # 2D evaluation metrics
             stability_res, rdkit_res, complete_rdmols = EDM_metric_2D(processed_mols)
-            logging.info("2D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-2D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
+                         " unique & valid: %.4f, unique & valid & novelty: %.4f" % (stability_res['atom_stable'],
+                         stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'],
+                         rdkit_res['Novelty']))
             mose_res = mose_metric(complete_rdmols)
-            logging.info("2D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
+            logging.info("Metric-2D || FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
                          mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
 
             # save sample mols
@@ -764,7 +748,7 @@ def vpsde_edge_cond_evaluate(config, workdir, eval_folder="eval"):
             # Substructure Geometry MMD
             if config.eval.sub_geometry:
                 sub_geo_mmd_res = sub_geo_mmd_metric(complete_rdmols)
-                logging.info("Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
+                logging.info("Metric-Align || Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
                     sub_geo_mmd_res['bond_length_mean'], sub_geo_mmd_res['bond_angle_mean'],
                     sub_geo_mmd_res['dihedral_angle_mean']))
                 ## bond length
@@ -1014,26 +998,22 @@ def vpsde_edge_cond_multi_evaluate(config, workdir, eval_folder="eval"):
             # EDM evaluation metrics
             stability_res, rdkit_res, sample_rdmols = EDM_metric(processed_mols)
             logging.info('Number of molecules: %d' % len(sample_rdmols))
-            logging.info("3D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-3D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f," %
+                         (stability_res['atom_stable'], stability_res['mol_stable'], rdkit_res['Validity'],
+                         rdkit_res['Complete']))
 
             # Mose evaluation metrics
             mose_res = mose_metric(sample_rdmols)
-            logging.info("3D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
-                         mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
+            logging.info("Metric-3D || FCD: %.4f" % (mose_res['FCD']))
 
             # 2D evaluation metrics
             stability_res, rdkit_res, complete_rdmols = EDM_metric_2D(processed_mols)
-            logging.info("2D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-                         " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'],
-                                                                   stability_res['mol_stable'], rdkit_res['Validity'],
-                                                                   rdkit_res['Complete'], rdkit_res['Unique'],
-                                                                   rdkit_res['Novelty']))
+            logging.info("Metric-2D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
+                         " unique & valid: %.4f, unique & valid & novelty: %.4f" % (stability_res['atom_stable'],
+                         stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'],
+                         rdkit_res['Novelty']))
             mose_res = mose_metric(complete_rdmols)
-            logging.info("2D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
+            logging.info("Metric-2D || FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
                          mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
 
             # save sample mols
@@ -1046,7 +1026,7 @@ def vpsde_edge_cond_multi_evaluate(config, workdir, eval_folder="eval"):
             # Substructure Geometry MMD
             if config.eval.sub_geometry:
                 sub_geo_mmd_res = sub_geo_mmd_metric(complete_rdmols)
-                logging.info("Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
+                logging.info("Metric-Align || Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
                     sub_geo_mmd_res['bond_length_mean'], sub_geo_mmd_res['bond_angle_mean'],
                     sub_geo_mmd_res['dihedral_angle_mean']))
                 ## bond length

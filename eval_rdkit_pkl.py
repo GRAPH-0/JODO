@@ -105,14 +105,12 @@ if __name__ == "__main__":
         # EDM stability evaluation metrics
         stability_res, rdkit_res, sample_rdmols = EDM_metric(processed_mols)
         print('Number of molecules: %d' % len(sample_rdmols))
-        print("3D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-            " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'], stability_res['mol_stable'],
-            rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'], rdkit_res['Novelty']))
+        print("Metric-3D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f," % (
+            stability_res['atom_stable'], stability_res['mol_stable'], rdkit_res['Validity'], rdkit_res['Complete']))
 
         # Mose evaluation metrics
         mose_res = mose_metric(sample_rdmols)
-        print("3D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'], mose_res['SNN'],
-            mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
+        print("Metric-3D || FCD: %.4f" % (mose_res['FCD']))
 
         # 3D geometry
         if args.sub_geometry:
@@ -120,35 +118,33 @@ if __name__ == "__main__":
                 sub_geo_mmd_res = sub_geo_mmd_metric(samples)
             else:
                 sub_geo_mmd_res = sub_geo_mmd_metric(sample_rdmols)
-            print("Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
+            print("Metric-Align || Bond Length MMD: %.4f, Bond Angle MMD: %.4f, Dihedral Angle MMD: %.6f" % (
                 sub_geo_mmd_res['bond_length_mean'], sub_geo_mmd_res['bond_angle_mean'],
                 sub_geo_mmd_res['dihedral_angle_mean']))
-            ## bond length
-            bond_length_str = ''
-            for sym in dataset_info['top_bond_sym']:
-                bond_length_str += f"{sym}: %.4f " % sub_geo_mmd_res[sym]
-            print(bond_length_str)
-            ## bond angle
-            bond_angle_str = ''
-            for sym in dataset_info['top_angle_sym']:
-                bond_angle_str += f'{sym}: %.4f ' % sub_geo_mmd_res[sym]
-            print(bond_angle_str)
-            ## dihedral angle
-            dihedral_angle_str = ''
-            for sym in dataset_info['top_dihedral_sym']:
-                dihedral_angle_str += f'{sym}: %.6f ' % sub_geo_mmd_res[sym]
-            print(dihedral_angle_str)
+            # ## bond length
+            # bond_length_str = ''
+            # for sym in dataset_info['top_bond_sym']:
+            #     bond_length_str += f"{sym}: %.4f " % sub_geo_mmd_res[sym]
+            # print(bond_length_str)
+            # ## bond angle
+            # bond_angle_str = ''
+            # for sym in dataset_info['top_angle_sym']:
+            #     bond_angle_str += f'{sym}: %.4f ' % sub_geo_mmd_res[sym]
+            # print(bond_angle_str)
+            # ## dihedral angle
+            # dihedral_angle_str = ''
+            # for sym in dataset_info['top_dihedral_sym']:
+            #     dihedral_angle_str += f'{sym}: %.6f ' % sub_geo_mmd_res[sym]
+            # print(dihedral_angle_str)
 
     if args.type == '2D' or args.type == 'both':
         # convert samples to processed mols
         processed_mols = rdmol_process(samples, dataset_info, True)
 
         stability_res, rdkit_res, complete_rdmols = EDM_metric_2D(processed_mols)
-        print("2D atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
-            " unique & valid: %.4f, novelty: %.4f" % (stability_res['atom_stable'], stability_res['mol_stable'],
+        print("Metric-2D || atom stability: %.4f, mol stability: %.4f, validity: %.4f, complete: %.4f,"
+            " valid & unique: %.4f, valid & unique & novelty: %.4f" % (stability_res['atom_stable'], stability_res['mol_stable'],
             rdkit_res['Validity'], rdkit_res['Complete'], rdkit_res['Unique'], rdkit_res['Novelty']))
         mose_res = mose_metric(complete_rdmols)
-        print("2D FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'], mose_res['SNN'],
-            mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
-        print("Mean QED: %.4f, MCF: %.4f, SAS: %.4f, logP: %.4f, MW: %.4f" % (mose_res['QED'], mose_res['Filters'],
-            mose_res['SA'], mose_res['logP'], mose_res['weight']))
+        print("Metric-2D || FCD: %.4f, SNN: %.4f, Frag: %.4f, Scaf: %.4f, IntDiv: %.4f" % (mose_res['FCD'],
+            mose_res['SNN'], mose_res['Frag'], mose_res['Scaf'], mose_res['IntDiv']))
