@@ -89,7 +89,7 @@ unzip exp_2d.zip
 ```
 
 ## Dependencies
-* [pyTorch 1.11](https://pytorch.org/)
+* [pyTorch >= 1.11](https://pytorch.org/)
 * [PyG 2.1](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html)
 * See requirements.txt for others.
 
