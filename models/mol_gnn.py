@@ -660,7 +660,6 @@ class DGT_concat_2D(nn.Module):
         self.edge_th = config.model.edge_quan_th
         n_extra_heads = config.model.n_extra_heads
         mlp_ratio = config.model.mlp_ratio
-        self.spatial_cut_off = config.model.spatial_cut_off
         softmax_inf = config.model.softmax_inf
 
         in_edge_dim = config.model.edge_ch * 2

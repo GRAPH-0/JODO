@@ -41,7 +41,7 @@ def get_config():
     config.model = model = ml_collections.ConfigDict()
 
     # # common model parameters
-    model.name = 'egnn_transformer_selfcond_mix5'
+    model.name = 'cond_DGT_concat'
     model.pred_data = True  # 'noise' or 'data'
     model.include_fc_charge = True
     model.normalize_factors = '1, 4, 4, 1'
@@ -78,7 +78,7 @@ def get_config():
     training.eval_samples = 128
     training.log_freq = 500
 
-    training.n_iters = 1500000
+    training.n_iters = 2500000
     training.snapshot_freq = 50000
     # # store additional checkpoints for preemption (meta)
     training.snapshot_freq_for_preemption = 10000

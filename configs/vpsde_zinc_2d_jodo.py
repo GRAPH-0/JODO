@@ -51,16 +51,12 @@ def get_config():
     model.n_heads = 16
     model.dropout = 0.1
     model.cond_time = True
-    model.dist_gbf = True
-    model.gbf_name = 'CondGaussianLayer'
     model.self_cond = True
     model.self_cond_type = 'ori'  # 'ori', 'clamp'
 
     model.edge_quan_th = 0.
     model.n_extra_heads = 1
-    model.CoM = False
     model.mlp_ratio = 2
-    model.spatial_cut_off = 2.
     model.softmax_inf = True
     model.trans_name = 'TransMixLayer'
 
@@ -86,7 +82,7 @@ def get_config():
     # optimization
     config.optim = optim = ml_collections.ConfigDict()
     optim.weight_decay = 0
-    optim.optimizer = 'AdamW'  # 'Adam'
+    optim.optimizer = 'AdamW'
     optim.lr = 2e-4
     optim.beta1 = 0.9
     optim.eps = 1e-8
@@ -104,10 +100,10 @@ def get_config():
     # evaluation
     config.eval = evaluate = ml_collections.ConfigDict()
     evaluate.enable_sampling = True
-    evaluate.batch_size = 2500
+    evaluate.batch_size = 2000
     evaluate.num_samples = 10000
     evaluate.begin_ckpt = 10
-    evaluate.end_ckpt = 20
+    evaluate.end_ckpt = 10
     evaluate.ckpts = ''
     evaluate.save_graph = False
     evaluate.sub_geometry = False

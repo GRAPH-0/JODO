@@ -77,7 +77,7 @@ def get_config():
     training.eval_samples = 128
     training.log_freq = 500
 
-    training.n_iters = 1500000
+    training.n_iters = 2000000
     training.snapshot_freq = 50000
     # # store additional checkpoints for preemption (meta)
     training.snapshot_freq_for_preemption = 10000

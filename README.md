@@ -88,6 +88,11 @@ wget https://zenodo.org/record/7966935/files/exp_2d.zip
 unzip exp_2d.zip
 ```
 
+## Dependencies
+* [pyTorch 1.11](https://pytorch.org/)
+* [PyG 2.1](https://pytorch-geometric.readthedocs.io/en/latest/install/installation.html)
+* See requirements.txt for others.
+
 ## Unconditional Generation
 
 QM9 Training Example:
@@ -132,52 +137,77 @@ CUDA_VISIBLE_DEVICES=0,1 python main.py --config configs/vpsde_geom_uncond_jodo.
 
 ```shell
 # Training
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.model.softmax_inf=False
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_gap --config.cond_property gap
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_homo --config.cond_property homo
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_lumo --config.cond_property lumo
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_mu --config.cond_property mu
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_Cv --config.cond_property Cv
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.model.softmax_inf=False
 
 # Sampling
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.eval.ckpts '40' --config.model.softmax_inf=False
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_gap --config.cond_property gap --config.eval.ckpts '40'
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_homo --config.cond_property homo --config.eval.ckpts '40'
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_lumo --config.cond_property lumo --config.eval.ckpts '40'
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_mu --config.cond_property mu --config.eval.ckpts '40'
 CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_Cv --config.cond_property Cv --config.eval.ckpts '40'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond/vpsde_qm9_cond_jodo_alpha --config.cond_property alpha --config.eval.ckpts '40' --config.model.softmax_inf=False
 ```
 
 * Set conditional property `alpha, gap, homo, lumo, mu, Cv` by `--config.cond_property`.
 
 ```shell
 # Training
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode train --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu
 
 # Sampling
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu --config.eval.ckpts '50'
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu --config.eval.ckpts '50'
-CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu --config.eval.ckpts '50'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_Cv_mu --config.cond_property1 Cv --config.cond_property2 mu --config.eval.ckpts '50'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_gap_mu --config.cond_property1 gap --config.cond_property2 mu --config.eval.ckpts '50'
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_cond_multi_jodo.py --mode eval --workdir exp_cond_multi/vpsde_qm9_cond_jodo_alpha_mu --config.cond_property1 alpha --config.cond_property2 mu --config.eval.ckpts '50'
 ```
 * Set multi conditional properties via `--config.cond_property1` and `--config.cond_property2`.
 
 
 ## Molecular Graph Generation
 
-[//]: # (ZINC250k:)
+ZINC250k:
+```shell
+# Training
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_zinc_2d_jodo.py --mode train --workdir exp_2d/vpsde_zinc_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000
 
-[//]: # (```shell)
+# Sampling
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_zinc_2d_jodo.py --mode eval --workdir exp_2d/vpsde_zinc_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000 --config.eval.ckpts '5'
+```
+* You can train a smaller model by `--config.model.nf 256 --config.model.n_heads 16 --config.model.n_layers 8`.
 
-[//]: # (# Training)
+MOSES:
+```shell
+# Training
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_moses_2d_jodo.py --mode train --workdir exp_2d/vpsde_moses_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000
 
-[//]: # (CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_zinc_2d_jodo.py --mode train --workdir exp_2d/vpsde_zinc_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000   )
+# Sampling
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_moses_2d_jodo.py --mode eval --workdir exp_2d/vpsde_moses_2d_jodo --config.model.nf 1024 --config.model.n_heads 64 --config.model.n_layers 6 --config.training.snapshot_freq 300000 --config.eval.ckpts '4'
+```
 
-[//]: # ()
-[//]: # (# Sampling)
+Training CDGS on QM9 and GEOM-Drugs:
+```shell
+# QM9
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_qm9_2d_cdgs.py --mode train --workdir exp_2d/vpsde_qm9_2d_cdgs
 
-[//]: # (```)
+# GEOM-Drugs
+CUDA_VISIBLE_DEVICES=0 python main.py --config configs/vpsde_geom_2d_cdgs.py --mode train --workdir exp_2d/vpsde_geom_2d_cdgs
+```
+
+## Generated Molecules  
+We provide pickles of 10000 molecules generated by JODO on different datasets in `./rdkit_mols`. 
+Molecules are saved as RDKit Mol objects. Just load the list of molecules and make further analysis.
+
+```python
+# Example for loading molecules generated from JODO trained on GEOM-Drugs dataset. 
+import pickle
+mol_list = pickle.load(open('rdkit_mols/geom_jodo_ancestral_ckpt_35.pkl', 'rb'))
+```
 
 ## Citation
 
