@@ -166,10 +166,11 @@ class TransMixLayer(MessagePassing):
         edge_attn = torch.tanh(edge_attn)
         alpha = (query_i * key_j * edge_attn).sum(dim=-1) / math.sqrt(self.out_channels)
 
-        # set 0 to -inf in extra_heads
+        # set 0 to -inf/1e-10 in extra_heads
         if self.set_inf:
             extra_inf_heads = extra_heads.clone()
-            extra_inf_heads[extra_inf_heads==0.] = -float('inf')
+            # extra_inf_heads[extra_inf_heads==0.] = -float('inf')
+            extra_inf_heads[extra_inf_heads == 0.] = -1e10
             alpha = torch.cat([extra_inf_heads, alpha], dim=-1)
         else:
             alpha = torch.cat([extra_heads, alpha], dim=-1)
